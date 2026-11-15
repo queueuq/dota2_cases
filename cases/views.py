@@ -1,10 +1,11 @@
 import random
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from catalog.models import Case
@@ -55,6 +56,25 @@ def inventory(request):
         .order_by("-obtained_at")
     )
     return render(request, "cases/inventory.html", {"user_items": items})
+
+
+@login_required
+@require_POST
+def sell_item(request, pk):
+    with transaction.atomic():
+        user = User.objects.select_for_update().get(pk=request.user.pk)
+        user_item = get_object_or_404(
+            UserItem.objects.select_for_update(of=("self",)).select_related("item"),
+            pk=pk,
+            user=user,
+            is_sold=False,
+        )
+        user_item.is_sold = True
+        user_item.save(update_fields=["is_sold"])
+        user.balance += user_item.item.price
+        user.save(update_fields=["balance"])
+    messages.success(request, "Предмет «%s» продан за %s ₽" % (user_item.item.name, user_item.item.price))
+    return redirect("cases:inventory")
 
 
 @login_required
