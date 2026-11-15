@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ case.name }}{% endblock %}
+{% block content %}
+<div class="case-head">
+  <img src="{{ case.image.url }}" alt="{{ case.name }}">
+  <div>
+    <h1>{{ case.name }}</h1>
+    <p class="muted">{{ case.description }}</p>
+    <div class="price big">{{ case.price }} ₽</div>
+  </div>
+</div>
+
+<h2>Что внутри</h2>
+<div class="grid">
+  {% for e in entries %}
+    <div class="card item-card rarity-{{ e.item.rarity }}">
+      <img src="{{ e.item.image.url }}" alt="{{ e.item.name }}">
+      <h4>{{ e.item.name }}</h4>
+      <div class="muted">{{ e.item.hero.name }}</div>
+      <div class="rarity-label rarity-text-{{ e.item.rarity }}">{{ e.item.get_rarity_display }}</div>
+      <div class="chance">{{ e.chance }}%</div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

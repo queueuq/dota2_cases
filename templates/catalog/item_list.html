@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Предметы{% endblock %}
+{% block content %}
+<h1>Все предметы</h1>
+<form method="get" class="filters">
+  <input type="text" name="q" value="{{ q }}" placeholder="Поиск по названию или герою">
+  <select name="hero">
+    <option value="">Все герои</option>
+    {% for h in heroes %}
+      <option value="{{ h.id }}" {% if sel_hero == h.id|stringformat:"s" %}selected{% endif %}>{{ h.name }}</option>
+    {% endfor %}
+  </select>
+  <select name="rarity">
+    <option value="">Любая редкость</option>
+    {% for value, label in rarities %}
+      <option value="{{ value }}" {% if sel_rarity == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn small">Найти</button>
+</form>
+<div class="grid">
+  {% for item in items %}
+    <div class="card item-card rarity-{{ item.rarity }}">
+      <img src="{{ item.image.url }}" alt="{{ item.name }}">
+      <h4>{{ item.name }}</h4>
+      <div class="muted">{{ item.hero.name }} · {{ item.get_slot_display }}</div>
+      <div class="rarity-label rarity-text-{{ item.rarity }}">{{ item.get_rarity_display }}</div>
+      <div class="price">{{ item.price }} ₽</div>
+    </div>
+  {% empty %}
+    <p>Ничего не найдено.</p>
+  {% endfor %}
+</div>
+{% endblock %}
