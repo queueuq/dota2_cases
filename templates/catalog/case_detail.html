@@ -11,7 +11,7 @@
     {% csrf_token %}
     <div class="case-actions">
       {% if user.is_authenticated %}
-        <button id="open-btn" class="btn" data-url="{% url 'cases:open' case.slug %}">Открыть кейс</button>
+      <button id="open-btn" class="btn" data-url="{% url 'cases:open_case' case.slug %}">Открыть кейс</button>
       {% else %}
         <a class="btn" href="{% url 'login' %}?next={{ request.path }}">Войдите, чтобы открыть</a>
       {% endif %}

@@ -1,6 +1,6 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
-
+from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 
 
@@ -15,3 +15,7 @@ def register(request):
     return render(request, "accounts/register.html", {"form": form})
 
 
+@login_required
+def profile(request):
+    payments = request.user.payments.all().order_by("-created_at")
+    return render(request, "accounts/profile.html", {"payments": payments})

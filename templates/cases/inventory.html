@@ -9,7 +9,7 @@
       <h4>{{ ui.item.name }}</h4>
       <div class="muted">{{ ui.item.hero.name }}</div>
       <div class="rarity-label rarity-text-{{ ui.item.rarity }}">{{ ui.item.get_rarity_display }}</div>
-      <form method="post" action="{% url 'cases:sell' ui.pk %}">
+      <form method="post" action="{% url 'cases:sell_item' ui.pk %}">
         {% csrf_token %}
         <button class="btn small">Продать за {{ ui.item.price }} ₽</button>
       </form>
