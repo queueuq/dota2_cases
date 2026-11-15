@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Инвентарь{% endblock %}
+{% block content %}
+<h1>Мой инвентарь</h1>
+<div class="grid">
+  {% for ui in user_items %}
+    <div class="card item-card rarity-{{ ui.item.rarity }}">
+      <img src="{{ ui.item.image.url }}" alt="{{ ui.item.name }}">
+      <h4>{{ ui.item.name }}</h4>
+      <div class="muted">{{ ui.item.hero.name }}</div>
+      <div class="rarity-label rarity-text-{{ ui.item.rarity }}">{{ ui.item.get_rarity_display }}</div>
+      <form method="post" action="{% url 'cases:sell' ui.pk %}">
+        {% csrf_token %}
+        <button class="btn small">Продать за {{ ui.item.price }} ₽</button>
+      </form>
+    </div>
+  {% empty %}
+    <p>Инвентарь пуст. <a href="{% url 'home' %}">Открой первый кейс!</a></p>
+  {% endfor %}
+</div>
+{% endblock %}

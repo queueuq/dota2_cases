@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "catalog",
+    "cases",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
