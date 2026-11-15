@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Тестовая оплата{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h1>Тестовая оплата</h1>
+  <p>Платёж #{{ payment.id }} на сумму <strong>{{ payment.amount }} ₽</strong></p>
+  <p class="muted">Это заглушка платёжной системы для локальной разработки.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn" name="pay" value="1">Оплатить</button>
+    <button class="btn ghost" name="cancel" value="1">Отменить</button>
+  </form>
+</div>
+{% endblock %}
