@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<h1>Профиль: {{ user.username }}</h1>
+<p>Баланс: <strong>{{ user.balance }} ₽</strong>
+  <a class="btn small" href="{% url 'payments:topup' %}">Пополнить</a></p>
+<h2>История платежей</h2>
+<table class="table">
+  <tr><th>№</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr>
+  {% for p in payments %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ p.created_at|date:"d.m.Y H:i" }}</td>
+      <td>{{ p.amount }} ₽</td>
+      <td>{{ p.get_status_display }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">Платежей пока нет.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
