@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Пополнение{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h1>Пополнение баланса</h1>
+  <p class="muted">Тестовый режим: реальные деньги не списываются.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Перейти к оплате</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Результат оплаты{% endblock %}
+{% block content %}
+<div class="form-box">
+  <h1>Платёж #{{ payment.id }}</h1>
+  {% if payment.status == "succeeded" %}
+    <p class="ok">Оплата прошла успешно! На баланс зачислено {{ payment.amount }} ₽.</p>
+  {% elif payment.status == "canceled" %}
+    <p class="bad">Платёж отменён.</p>
+  {% else %}
+    <p>Платёж ещё обрабатывается. Обновите страницу через несколько секунд.</p>
+  {% endif %}
+  <a class="btn" href="{% url 'home' %}">К кейсам</a>
+</div>
+{% endblock %}
