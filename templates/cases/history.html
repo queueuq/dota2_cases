@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}История{% endblock %}
+{% block content %}
+<h1>История открытий</h1>
+<table class="table">
+  <tr><th>Дата</th><th>Кейс</th><th>Предмет</th><th>Герой</th><th>Редкость</th><th>Статус</th></tr>
+  {% for ui in user_items %}
+    <tr>
+      <td>{{ ui.obtained_at|date:"d.m.Y H:i" }}</td>
+      <td>{{ ui.case.name|default:"-" }}</td>
+      <td class="rarity-text-{{ ui.item.rarity }}">{{ ui.item.name }}</td>
+      <td>{{ ui.item.hero.name }}</td>
+      <td>{{ ui.item.get_rarity_display }}</td>
+      <td>{% if ui.is_sold %}продан{% else %}в инвентаре{% endif %}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6">Вы ещё ничего не открывали.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

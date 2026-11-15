@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Кейсы{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>Вкусная косметика Dota 2</h1>
+  <p class="muted">Выбери кейс, открой его и забери предмет для любимого героя.</p>
+</div>
+<div class="grid">
+  {% for case in cases %}
+    <a class="card case-card" href="{% url 'case_detail' case.slug %}">
+      <img src="{{ case.image.url }}" alt="{{ case.name }}">
+      <h3>{{ case.name }}</h3>
+      <div class="price">{{ case.price }} ₽</div>
+    </a>
+  {% empty %}
+    <p>Кейсов пока нет. Выполните <code>python manage.py load_demo_data</code>.</p>
+  {% endfor %}
+</div>
+{% endblock %}
