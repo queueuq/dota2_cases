@@ -20,3 +20,26 @@ def topup(request):
             return redirect(url)
         return redirect("payments:fake_pay", pk=payment.pk)
     return render(request, "payments/topup.html", {"form": form})
+
+
+@login_required
+def fake_pay(request, pk):
+    if settings.PAYMENT_BACKEND != "fake":
+        raise Http404
+    payment = get_object_or_404(Payment, pk=pk, user=request.user)
+    if payment.status != "pending":
+        return redirect("payments:result", pk=payment.pk)
+    if request.method == "POST":
+        if "pay" in request.POST:
+            services.mark_succeeded(payment)
+        else:
+            services.mark_canceled(payment)
+        return redirect("payments:result", pk=payment.pk)
+    return render(request, "payments/fake_pay.html", {"payment": payment})
+
+
+@login_required
+def result(request, pk):
+    payment = get_object_or_404(Payment, pk=pk, user=request.user)
+    payment = services.refresh_status(payment)
+    return render(request, "payments/result.html", {"payment": payment})
